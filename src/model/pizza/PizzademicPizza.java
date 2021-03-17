@@ -2,7 +2,7 @@ package model.pizza;
 
 import model.upgrade.*;
 
-public abstract class PizzademicPizza {
+public abstract class PizzademicPizza{
 	
 	public abstract PizzademicPizza clone();
 	
@@ -13,5 +13,11 @@ public abstract class PizzademicPizza {
 	public abstract Double viewPrice();
 	public abstract String viewDescription();
 	public abstract int viewQuantity();
+
+	
+	
+	
+	
+	
 }
 
