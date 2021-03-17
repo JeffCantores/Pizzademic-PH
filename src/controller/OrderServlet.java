@@ -24,9 +24,10 @@ public class OrderServlet extends HttpServlet {
 			int pizzaQty = Integer.parseInt(request.getParameter("quantity"));
 			String pizzaFlavor = request.getParameter("flavor");
 			Double pizzaPrice = Double.parseDouble(request.getParameter("price"));
+			Double upgradePrice = Double.parseDouble(request.getParameter("upgradePrice"));
 			int pizzaUpgrade = Integer.parseInt(request.getParameter("upgrade"));
 			
-			Transaction transaction = new Transaction(pizzaFlavor, pizzaQty, pizzaUpgrade, pizzaPrice);	
+			Transaction transaction = new Transaction(pizzaFlavor, pizzaQty, pizzaUpgrade, pizzaPrice, upgradePrice);	
 
 			request.setAttribute("order", transaction); 
 			
@@ -35,6 +36,7 @@ public class OrderServlet extends HttpServlet {
 			
 		}catch(NullPointerException npe){
 			//If the user put something on their forehead, they will be redirected to the error page
+			npe.printStackTrace();
 			RequestDispatcher dispatcher = request.getRequestDispatcher("error.jsp");
 			dispatcher.forward(request, response);
 		}

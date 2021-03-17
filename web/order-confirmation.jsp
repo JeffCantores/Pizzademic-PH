@@ -83,6 +83,7 @@
 	    <h1 class="display-4">
 	    Thank You! </h1>
 	    <p class="lead">Your purchase is what keeps us running. Your order will be delivered in less than an hour. (Metro Manila area only)</p>
+	    <p class="lead">Your confirmation receipt will be sent shortly.</p>
 	    <p>For more inquiries kindly visit our Facebook Page. (kindly click the Contact Us button)</p>
 	    
 	    <hr class="my-4">

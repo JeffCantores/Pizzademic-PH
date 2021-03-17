@@ -5,10 +5,15 @@ import model.upgrade.*;
 import java.util.HashMap;
 import java.util.Map;
 
+//import java.util.ArrayList;
+//import java.util.List;
+
 import model.pizza.*;
+//import model.item.*;
 
 public class PizzaFactory implements AbstractFactory {
 	
+//	private List<PizzaProduct> pizzaProducts = new ArrayList<PizzaProduct>();
 	private static final Map<String, PizzademicPizza> pizza_prototypes = new HashMap<>();
 	
 	static {

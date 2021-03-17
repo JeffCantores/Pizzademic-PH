@@ -2,5 +2,5 @@ package model.transaction;
 
 public interface Facade {
 
-	public void process();
+	public boolean process();
 }

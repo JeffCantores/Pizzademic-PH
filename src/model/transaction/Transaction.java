@@ -16,6 +16,8 @@ public class Transaction implements Facade{
 	private int quantity;
 	private int upgradeQuantity; //pag greater than pizzaQty neglect natin yung excess
 	private Double productPrice;
+	private Double upgradePrice;
+	private Double totalUpgradePrice;
 	private Double totalPrice; // included na yung price ng upgrade dito pre
 	
 	private String houseSt;
@@ -63,21 +65,30 @@ public class Transaction implements Facade{
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
 	}
+	
+	public Double getTotalUpgradePrice() {
+		return totalUpgradePrice;
+	}
+
+	public void setTotalUpgradePrice(Double totalUpgradePrice) {
+		this.totalUpgradePrice = totalUpgradePrice;
+	}
 
 	public Transaction() {
 	}
 	
 	//this constructor creates an object that will serve as the temporary storage of user order
-	public Transaction(String pizza, int quantity, int upgrade, Double productPrice) {
+	public Transaction(String pizza, int quantity, int upgrade, Double productPrice, Double upgradePrice) {
 		this.pizzaFlavor = pizza;
 		this.quantity = quantity;
 		this.upgradeQuantity = upgrade;
 		this.productPrice = productPrice;
+		this.upgradePrice = upgradePrice;
 		if(this.upgradeQuantity > this.quantity) {
 			this.upgradeQuantity = quantity;
 		}
 		
-		calculator();
+	   calculator();
 	}
 
 	public String getPizzaFlavor() {
@@ -134,6 +145,14 @@ public class Transaction implements Facade{
 
 	public void setProductPrice(Double productPrice) {
 		this.productPrice = productPrice;
+	}
+	
+	public Double getUpgradePrice() {
+		return upgradePrice;
+	}
+
+	public void setUpgradePrice(Double upgradePrice) {
+		this.upgradePrice = upgradePrice;
 	}
 
 
@@ -238,24 +257,32 @@ public class Transaction implements Facade{
 		total = this.productPrice * this.quantity;
 		
 		if(this.upgradeQuantity != 0) {
-			int upgradePriceTotal = this.upgradeQuantity*42;
-			this.totalPrice = total + upgradePriceTotal;
+			this.totalUpgradePrice = this.upgradeQuantity*this.upgradePrice;
+			this.totalPrice = total + this.totalUpgradePrice;
 		}else {
 			this.totalPrice = total;
 		}
 		return totalPrice;
 	}
 
+
 	@Override
-	public void process() {
+	public boolean process() {
 		
 		if(luhnTest()) {
 			System.out.println("Credit Card is Valid");
 			addToTransactions();
 			updateProductTable();
-			GeneratePDF.main(null, pizzaFlavor, quantity, upgradeQuantity, totalPrice, name, houseSt, brgy, city, zipCode);
+			GeneratePDF.main(null, pizzaFlavor, quantity, upgradeQuantity, totalPrice, name, houseSt, brgy, city, zipCode, totalUpgradePrice);
 			EmailSender.main(null, userEmail);
+			
+			return true;
+		}else {
+			System.out.println("Credit card is invalid!");
+			return false;
 		}
+		
+		
 		
 	}
 

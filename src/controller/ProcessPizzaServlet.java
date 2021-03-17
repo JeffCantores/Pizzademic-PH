@@ -31,7 +31,6 @@ private static final long serialVersionUID = 1L;
 			
 			pizza.setUpgrade(upgrade);
 			
-			;
 			System.out.println("Flavor picked: " + pizzaType);
 			
 			request.setAttribute("pizza", pizza);
