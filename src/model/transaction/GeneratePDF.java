@@ -14,7 +14,7 @@ public class GeneratePDF {
 
 	public static void main(String[] args, String pizzaFlavor, int quantity, 
 			int upgradeQuantity, Double totalPrice, String name, String houseSt, String brgy, 
-			String city, String zipCode) {
+			String city, String zipCode, Double totalUpgradePrice) {
 		
 		String filename = "pizzademic-ph-receipt.pdf";
         
@@ -33,6 +33,7 @@ public class GeneratePDF {
 	   	      String orderMessage1 = "Your orders are: ";
 	   	      String orderMessage2 = String.valueOf(quantity) + "pc/s " + pizzaFlavor;
 	   	      String orderMessage3 = "Upgraded pizza: " + String.valueOf(upgradeQuantity);
+	   	      String orderMessage4 = "Total Upgrade Price: " + String.valueOf(totalUpgradePrice);
 	   	      String totalPriceMessage= "TOTAL: Php " + String.valueOf(totalPrice) + "0";
 	   	      String addressMessage1 = "Customer Name: " + name;
 	   	      String addressMessage2 = "Address: " + houseSt + ", " + brgy + ", " + city + ", " + zipCode;  
@@ -80,6 +81,8 @@ public class GeneratePDF {
 	           contents.showText(orderMessage2);
 	           contents.newLine();
 	           contents.showText(orderMessage3);
+	           contents.newLine();
+	           contents.showText(orderMessage4);
 	           contents.setLeading(50f);
 	           
 	           contents.newLine();

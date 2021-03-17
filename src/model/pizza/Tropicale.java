@@ -7,7 +7,9 @@ import java.sql.SQLException;
 
 import model.upgrade.Upgrade;
 import utility.DBOps;
+import utility.Packing;
 import utility.SingletonDB;
+import utility.Wrapper;
 
 public class Tropicale extends PizzademicPizza implements DBOps{
 	
@@ -89,5 +91,9 @@ public class Tropicale extends PizzademicPizza implements DBOps{
 		return new Tropicale();
 	}
 		
-
+	@Override
+	public Packing packing() {
+		return new Wrapper();
+	}
+	
 }

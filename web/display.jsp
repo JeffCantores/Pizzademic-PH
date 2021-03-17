@@ -112,9 +112,10 @@
 	    <span class="h5">Stock: ${pizza.viewQuantity()}</span> 
 	    
 	    <hr class="my-4">
-  		<p class="lead">Upgrade to <b>${pizza.getUpgrade().viewUpgradeType()}</b> for only Php 42.00</p>
+	    <form action='processorder.action' method='post'>
+  		<p class="lead">Upgrade to <b>${pizza.getUpgrade().viewUpgradeType()}</b> for only Php
+  		<input type="text" name="upgradePrice" value="${pizza.getUpgrade().viewUpgradePrice()}" hidden>0 srp</p>
   		<p>${pizza.getUpgrade().viewUpgradeDetails()}</p>
-  		<form action='processorder.action' method='post'>
     			<input type="text" name="flavor" value="${pizza.viewFlavor()}" hidden>
     			<input type="text" name="price" value="${pizza.viewPrice()}" hidden><br>
     			<label class="h4" for="quantity">Quantity:</label>

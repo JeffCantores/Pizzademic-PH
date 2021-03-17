@@ -7,7 +7,9 @@ import java.sql.SQLException;
 
 import model.upgrade.Upgrade;
 import utility.DBOps;
+import utility.Packing;
 import utility.SingletonDB;
+import utility.Wrapper;
 
 public class FourCheese extends PizzademicPizza implements DBOps {
 	
@@ -89,9 +91,11 @@ public class FourCheese extends PizzademicPizza implements DBOps {
 	public PizzademicPizza clone() {
 		return new FourCheese();
 	}
-
 	
-	
+	@Override
+	public Packing packing() {
+		return new Wrapper();
+	}
 
 	
 	

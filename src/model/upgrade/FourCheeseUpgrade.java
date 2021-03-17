@@ -11,11 +11,17 @@ import utility.SingletonDB;
 public class FourCheeseUpgrade extends Upgrade implements DBOps{
 		
 	private String upgradeType;
+	private Double upgradePrice;
 	private String upgradeDetails;
 	
 	@Override
 	public String viewUpgradeType() {
 		return upgradeType;
+	}
+	
+	@Override
+	public Double viewUpgradePrice() {
+		return upgradePrice;
 	}
 		
 	@Override
@@ -41,6 +47,7 @@ public class FourCheeseUpgrade extends Upgrade implements DBOps{
 				
 	            while(upgradeRecord.next()) {
 	            	upgradeType = upgradeRecord.getString("upgrade_type");
+	            	upgradePrice = upgradeRecord.getDouble("upgrade_price");
 		            upgradeDetails = upgradeRecord.getString("upgrade_description");
 		 
 	            }
@@ -60,6 +67,8 @@ public class FourCheeseUpgrade extends Upgrade implements DBOps{
 	public Upgrade clone() {
 		return new FourCheeseUpgrade();
 	}
+
+	
 		
 		
 }

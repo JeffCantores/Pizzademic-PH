@@ -13,6 +13,7 @@ public interface DBOps {
 	String INITIALIZE_UPGRADES_TABLE = "CREATE TABLE IF NOT EXISTS `upgrade` (" + 
 			"`id` INT NOT NULL AUTO_INCREMENT ," + 
 			"`upgrade_type` VARCHAR(20) NOT NULL ," + 
+			"`upgrade_price` FLOAT NOT NULL ," + 
 			"`upgrade_description` VARCHAR(500) NOT NULL , PRIMARY KEY (`id`));";
 
 	String INITIALIZE_TRANSACTION_TABLE = "CREATE TABLE IF NOT EXISTS `transactions` (" + 
@@ -33,11 +34,11 @@ public interface DBOps {
 			"(2, 'Pepperoni', 185.00, 'Savory smell of meaty Pepperonis combined with a lot of cheese, on top of a rich and delicious tomato sauce.', 10)," + 
 			"(3, 'Tropicale', 205.00, 'Refreshing combination of Fresh Pineapple, savory bell peppers, meaty goodness of hams, and a lot of cheese, altogether on top of a rich and delicious tomato sauce.', 10);";
 			
-	String INSERT_UPGRADE_VALUES = "INSERT IGNORE INTO upgrade (id, upgrade_type, upgrade_description)" + 
+	String INSERT_UPGRADE_VALUES = "INSERT IGNORE INTO upgrade (id, upgrade_type, upgrade_price, upgrade_description)" + 
 			"VALUES " + 
-			"(1, 'Four Cheese Supreme','Additional Cheese! for Greater Satisfaction')," + 
-			"(2, 'Pepperoni Supreme', 'Additional Pepperoni! for Greater Satisfaction')," + 
-			"(3, 'Tropicale Supreme', 'Additional Pineapples! for Greater Satisfaction');";
+			"(1, 'Four Cheese Supreme', 42.00, 'Additional Cheese! for Greater Satisfaction')," + 
+			"(2, 'Pepperoni Supreme', 42.00, 'Additional Pepperoni! for Greater Satisfaction')," + 
+			"(3, 'Tropicale Supreme', 42.00, 'Additional Pineapples! for Greater Satisfaction');";
 	
 	//Query for getting all the records in the database
 	String GET_ALL_RECORDS = "select * from pizza";
