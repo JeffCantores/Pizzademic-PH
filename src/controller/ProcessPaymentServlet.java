@@ -3,6 +3,7 @@ package controller;
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -10,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.transaction.Transaction;
 
+import javax.servlet.*;
 
 public class ProcessPaymentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -21,6 +23,8 @@ public class ProcessPaymentServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		try {
+			
+			ServletContext context = getServletContext();
 			
 			Transaction confirmTransaction = new Transaction();
 			
@@ -38,7 +42,7 @@ public class ProcessPaymentServlet extends HttpServlet {
 			confirmTransaction.setZipCode(request.getParameter("zipCode"));
 			
 			//implementation of the Facade Design Pattern
-			boolean isValid = confirmTransaction.process();
+			boolean isValid = confirmTransaction.process(context);
 			
 			if(isValid) {
 				request.setAttribute("checkout", confirmTransaction); 

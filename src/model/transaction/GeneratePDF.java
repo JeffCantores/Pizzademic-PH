@@ -33,7 +33,7 @@ public class GeneratePDF {
 	   	      String orderMessage1 = "Your orders are: ";
 	   	      String orderMessage2 = String.valueOf(quantity) + "pc/s " + pizzaFlavor;
 	   	      String orderMessage3 = "Upgraded pizza: " + String.valueOf(upgradeQuantity);
-	   	      String orderMessage4 = "Total Upgrade Price: " + String.valueOf(totalUpgradePrice);
+	   	      String orderMessage4 = "Total Upgrade Price: " + String.valueOf(totalUpgradePrice) + "0";
 	   	      String totalPriceMessage= "TOTAL: Php " + String.valueOf(totalPrice) + "0";
 	   	      String addressMessage1 = "Customer Name: " + name;
 	   	      String addressMessage2 = "Address: " + houseSt + ", " + brgy + ", " + city + ", " + zipCode;  

@@ -5,6 +5,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import javax.servlet.ServletContext;
+
 import utility.SingletonDB;
 
 public class Transaction implements Facade{
@@ -267,14 +269,14 @@ public class Transaction implements Facade{
 
 
 	@Override
-	public boolean process() {
+	public boolean process(ServletContext context) {
 		
 		if(luhnTest()) {
 			System.out.println("Credit Card is Valid");
 			addToTransactions();
 			updateProductTable();
 			GeneratePDF.main(null, pizzaFlavor, quantity, upgradeQuantity, totalPrice, name, houseSt, brgy, city, zipCode, totalUpgradePrice);
-			EmailSender.main(null, userEmail);
+			EmailSender.main(null, userEmail, context);
 			
 			return true;
 		}else {

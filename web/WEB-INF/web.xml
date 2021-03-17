@@ -41,4 +41,36 @@
     <servlet-name>OrderServlet</servlet-name>
     <url-pattern>/processorder.action</url-pattern>
   </servlet-mapping>
+  
+  <context-param>
+  	<param-name>mail.smtp.host</param-name>
+  	<param-value>smtp.gmail.com</param-value>
+  </context-param>
+  
+  <context-param>
+  	<param-name>mail.smtp.socketFactory.port</param-name>
+  	<param-value>465</param-value>
+  </context-param>
+  
+   <context-param>
+  	<param-name>mail.smtp.socketFactory.class</param-name>
+  	<param-value>javax.net.ssl.SSLSocketFactory</param-value>
+  </context-param>
+  
+  <context-param>
+  	<param-name>mail.smtp.auth</param-name>
+  	<param-value>true</param-value>
+  </context-param>
+  
+  <context-param>
+  	<param-name>mail.smtp.port</param-name>
+  	<param-value>465</param-value>
+  </context-param>
+  
+  
 </web-app>
+
+
+
+
+

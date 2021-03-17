@@ -1,5 +1,7 @@
 package model.transaction;
 
+import java.io.IOException;
+import java.nio.file.LinkOption;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Properties;
@@ -9,6 +11,8 @@ import javax.activation.DataSource;
 import javax.activation.FileDataSource;
 import javax.mail.*;
 import javax.mail.internet.*;
+import javax.servlet.ServletContext;
+
 
 public class EmailSender{   
 	
@@ -18,26 +22,26 @@ public class EmailSender{
 	 private static String mailSubject = "SEG31-DESPATT-CANTORES_GALANG-MP4";
 	 private static String mailBody = "Thank you for ordering!";
 	
-	 public static void main(String[] args, String userEmail) { 
+	 public static void main(String[] args, String userEmail, ServletContext context) { 
 		 
 		 toRecipient = userEmail;
-	     Mailer.send(fromSender,senderPassword ,toRecipient,mailSubject ,mailBody);   
+	     Mailer.send(fromSender,senderPassword ,toRecipient,mailSubject ,mailBody, context);   
 	 }  
 	 
 }    
 
 class Mailer{  
 	
-    public static void send(final String from,final String password,String to,String sub,String msg){  
-          //Get properties object    
+    public static void send(final String from,final String password,String to,String sub,String msg, ServletContext context){  
+    	
+    	//Get properties object    
           Properties properties = new Properties();    
           properties.put("mail.smtp.host", "smtp.gmail.com");    
           properties.put("mail.smtp.socketFactory.port", "465");    
           properties.put("mail.smtp.socketFactory.class",    
                     "javax.net.ssl.SSLSocketFactory");    
           properties.put("mail.smtp.auth", "true");    
-          properties.put("mail.smtp.port", "465");   
-          
+          properties.put("mail.smtp.port", "465");    
           
           //get Session   
           Session session = Session.getDefaultInstance(properties,    
@@ -53,7 +57,7 @@ class Mailer{
           try {    
         	  
         	  Path path = Paths.get("");
- 	          String root = path.toAbsolutePath().toString();
+        	  String root = path.toRealPath(LinkOption.NOFOLLOW_LINKS).toString();
  	         
 	          MimeMessage message = new MimeMessage(session);    
 	          message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));    
@@ -67,7 +71,8 @@ class Mailer{
 			  //4) create new MimeBodyPart object and set DataHandler object to this object      
 			  MimeBodyPart messageBodyPart2 = new MimeBodyPart();  
 			  
-			  String filename = root + "\\pizzademic-ph-receipt.pdf"; 
+			  String filename = root + "\\pizzademic-ph-receipt.pdf";
+			  
 			  DataSource source = new FileDataSource(filename);  
 			  messageBodyPart2.setDataHandler(new DataHandler(source));  
 			  messageBodyPart2.setFileName(filename);  
@@ -88,7 +93,10 @@ class Mailer{
         	  e.printStackTrace();
         	  throw new RuntimeException(e);
         	  
-          } finally {
+          }catch (IOException e) {
+    	      System.err.println(e);
+    	  } finally {
+    		  
 		}    
              
     }  
