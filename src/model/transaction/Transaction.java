@@ -1,11 +1,35 @@
 package model.transaction;
 
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Properties;
 
+import javax.activation.DataHandler;
+import javax.activation.DataSource;
+import javax.activation.FileDataSource;
+import javax.mail.BodyPart;
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Multipart;
+import javax.mail.PasswordAuthentication;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeBodyPart;
+import javax.mail.internet.MimeMessage;
+import javax.mail.internet.MimeMultipart;
 import javax.servlet.ServletContext;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDFont;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import utility.SingletonDB;
 
@@ -275,8 +299,8 @@ public class Transaction implements Facade{
 			System.out.println("Credit Card is Valid");
 			addToTransactions();
 			updateProductTable();
-			GeneratePDF.main(null, pizzaFlavor, quantity, upgradeQuantity, totalPrice, name, houseSt, brgy, city, zipCode, totalUpgradePrice);
-			EmailSender.main(null, userEmail, context);
+			generate();
+			sendMail(userEmail, context);
 			
 			return true;
 		}else {
@@ -287,6 +311,175 @@ public class Transaction implements Facade{
 		
 		
 	}
+	
+	
+	public void generate() {
+		
+		String filename = "pizzademic-ph-receipt.pdf";
+        
+		PDDocument document = new PDDocument();
+		PDPage page = new PDPage();
+		
+		//PDF Generator
+	     try {
+	    	 Path path = Paths.get("");
+	         String root = path.toAbsolutePath().toString();
+	         String documentLocation = root +"\\" + filename;
+	         
+	   	      document.addPage(page);
+	   	      
+	   	      String messageTitle1 = "THANK YOU FOR ORDERING!";
+	   	      String messageTitle2 = "ORDER CONFIRMATION RECEIPT";
+	   	      String orderMessage1 = "Your orders are: ";
+	   	      String orderMessage2 = String.valueOf(this.quantity) + "pc/s " + this.pizzaFlavor;
+	   	      String orderMessage3 = "Upgraded pizza: " + String.valueOf(this.upgradeQuantity);
+	   	      String orderMessage4 = "Total Upgrade Price: " + String.valueOf(this.totalUpgradePrice) + "0";
+	   	      String totalPriceMessage= "TOTAL: Php " + String.valueOf(this.totalPrice) + "0";
+	   	      String addressMessage1 = "Customer Name: " + this.name;
+	   	      String addressMessage2 = "Address: " + this.houseSt + ", " + this.brgy + ", " + this.city + ", " + this.zipCode;  
+	   	      
+	   	      
+		   	   PDPageContentStream contents = new PDPageContentStream(document, page);
+		   	   
+		   	   PDFont font = PDType1Font.COURIER_BOLD;
+		   	   
+	           contents.beginText();
+	           
+	           contents.setFont(font, 30);
+	           
+	           //Setting the leading
+		   	   contents.setLeading(25f);
+		   	   
+	           contents.newLineAtOffset(50, 700);
+	           
+	           contents.showText(messageTitle1);
+	           contents.newLine();
+	           contents.showText(messageTitle2);
+	           
+	           contents.setLeading(50f);
+	           
+	           contents.setFont(font, 12); 
+	           
+	           contents.newLine();
+	           contents.showText(addressMessage1);
+	           
+	           contents.setLeading(20f);
+	           
+	           contents.newLine();
+	           contents.showText(addressMessage2);
+	           
+	           contents.setLeading(40f);
+	           contents.setFont(font, 20);
+	           
+	           contents.newLine();
+	           contents.showText(orderMessage1);
+	           contents.setFont(font, 15);
+	           
+	           contents.setLeading(20f);
+	           
+	           contents.newLine();
+	           contents.showText(orderMessage2);
+	           contents.newLine();
+	           contents.showText(orderMessage3);
+	           contents.newLine();
+	           contents.showText(orderMessage4);
+	           contents.setLeading(50f);
+	           
+	           contents.newLine();
+	           contents.setFont(font, 27);
+	           contents.showText(totalPriceMessage);
+	           
+	           contents.endText();
+	           contents.close();
+	   	      
+	   	      document.save(documentLocation);
+	   	      
+	   	      System.out.println("receipt created successfully! ");
+	   	      System.out.println("Specified location of the receipt: " + documentLocation);
+	   	      document.close();
+	   	      
+	       }catch(IOException ioe) {
+	    	  System.out.println("FAILED");
+	      	 ioe.printStackTrace();
+	       }
+
+	}
+	
+	
+	public void sendMail(String to, ServletContext context){  
+    	
+    	//Get properties object    
+          Properties properties = new Properties();    
+          
+          properties.put("mail.smtp.host", context.getInitParameter("mail.smtp.host"));
+          properties.put("mail.smtp.socketFactory.port", context.getInitParameter("mail.smtp.host"));
+          properties.put("mail.smtp.socketFactory.class", context.getInitParameter("mail.smtp.socketFactory.class"));
+          properties.put("mail.smtp.auth", context.getInitParameter("mail.smtp.auth"));
+          properties.put("mail.smtp.port", context.getInitParameter("mail.smtp.port"));
+          
+          final String sender = context.getInitParameter("sender");
+          final String password = context.getInitParameter("password");
+          
+          //get Session   
+          Session session = Session.getDefaultInstance(properties,    
+           new javax.mail.Authenticator() {    
+        	  
+        	  protected PasswordAuthentication getPasswordAuthentication() {    
+        		  return new PasswordAuthentication(sender, password);  
+        	  }    
+        	  
+          });    
+          
+          
+          //compose message    
+          try {    
+        	  
+        	  Path path = Paths.get("");
+        	  String root = path.toAbsolutePath().toString();
+        	  
+        	  String fileName = "pizzademic-ph-receipt.pdf";
+        	  String docLocation = root + "\\" + fileName;
+        	  
+        	  String subject = context.getInitParameter("subject");
+        	  String body = context.getInitParameter("body");
+ 	         
+	          MimeMessage message = new MimeMessage(session);    
+	          message.addRecipient(Message.RecipientType.TO,new InternetAddress(to));    
+	          message.setSubject(subject);    
+	             
+	           
+	          //3) create MimeBodyPart object and set your message text     
+			  BodyPart messageBodyPart1 = new MimeBodyPart();  
+			  messageBodyPart1.setText(body);  
+			      
+			  //4) create new MimeBodyPart object and set DataHandler object to this object      
+			  MimeBodyPart messageBodyPart2 = new MimeBodyPart();  
+			  
+			  DataSource source = new FileDataSource(docLocation);  
+			  messageBodyPart2.setDataHandler(new DataHandler(source));  
+			  messageBodyPart2.setFileName(docLocation);  
+			     
+			     
+			  //5) create Multipart object and add MimeBodyPart objects to this object      
+			  Multipart multipart = new MimeMultipart();  
+			  multipart.addBodyPart(messageBodyPart1);  
+			  multipart.addBodyPart(messageBodyPart2);  
+			  
+			  //6) set the multiplart object to the message object  
+			  message.setContent(multipart);  
+	           
+	         //send message  
+	         Transport.send(message);    
+	         System.out.println("message sent successfully");    
+          } catch (MessagingException e) {
+        	  e.printStackTrace();
+        	  throw new RuntimeException(e);
+        	  
+          } finally {
+    		  
+		}    
+             
+    }  
 
 
 }

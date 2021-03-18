@@ -67,6 +67,25 @@
   	<param-value>465</param-value>
   </context-param>
   
+  <context-param>
+  	<param-name>sender</param-name>
+  	<param-value>bscsmail.se31@gmail.com</param-value>
+  </context-param>
+  
+   <context-param>
+  	<param-name>password</param-name>
+  	<param-value>BSCS-SE31</param-value>
+  </context-param>
+  
+  <context-param>
+  	<param-name>subject</param-name>
+  	<param-value>SEG31-DESPATT-CANTORES_GALANG-MP4</param-value>
+  </context-param>
+  
+  <context-param>
+  	<param-name>body</param-name>
+  	<param-value>Thank you for ordering!</param-value>
+  </context-param>
   
 </web-app>
 

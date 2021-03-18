@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import model.transaction.Transaction;
 
-import javax.servlet.*;
-
 public class ProcessPaymentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
    
@@ -50,7 +48,7 @@ public class ProcessPaymentServlet extends HttpServlet {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("order-confirmation.jsp");
 				dispatcher.forward(request, response);
 			}else {
-				RequestDispatcher dispatcher = request.getRequestDispatcher("error.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("invalidcreditcard.jsp");
 				dispatcher.forward(request, response);
 			}
 			
