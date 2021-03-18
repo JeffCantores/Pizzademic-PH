@@ -26,7 +26,8 @@ public interface DBOps {
 			"`pizza_flavor` VARCHAR(20) NOT NULL ,\r\n" +
 			"`total_price` FLOAT NOT NULL , \r\n" +  
 			"`upgrade_quantity` INT NOT NULL , \r\n" + 
-			"`quantity` INT NOT NULL , PRIMARY KEY (`transaction_id`));";
+			"`quantity` INT NOT NULL ,\r\n " +
+			"`packaging` VARCHAR(50) NOT NULL , PRIMARY KEY (`transaction_id`));";
 	
 	String INSERT_PIZZA_VALUES = "INSERT IGNORE INTO pizza (id, pizza_Flavor, pizza_price, pizza_description, quantity)" + 
 			"VALUES" + 

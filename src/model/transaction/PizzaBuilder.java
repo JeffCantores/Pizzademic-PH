@@ -33,7 +33,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 
 import utility.SingletonDB;
 
-public class Transaction implements Facade{
+public class PizzaBuilder implements Facade{
 	
 	private String name;
 	private String userEmail;
@@ -44,7 +44,8 @@ public class Transaction implements Facade{
 	private Double productPrice;
 	private Double upgradePrice;
 	private Double totalUpgradePrice;
-	private Double totalPrice; // included na yung price ng upgrade dito pre
+	private Double totalPrice; 
+	private String packing;
 	
 	private String houseSt;
 	private String brgy;
@@ -99,22 +100,31 @@ public class Transaction implements Facade{
 	public void setTotalUpgradePrice(Double totalUpgradePrice) {
 		this.totalUpgradePrice = totalUpgradePrice;
 	}
+	
+	public String getPacking() {
+		return this.packing;
+	}
 
-	public Transaction() {
+	public void setPacking(String packing) {
+		this.packing = packing;
+	}
+
+	public PizzaBuilder() {
 	}
 	
 	//this constructor creates an object that will serve as the temporary storage of user order
-	public Transaction(String pizza, int quantity, int upgrade, Double productPrice, Double upgradePrice) {
+	public PizzaBuilder(String pizza, int quantity, int upgrade, Double productPrice, Double upgradePrice, String packing) {
 		this.pizzaFlavor = pizza;
 		this.quantity = quantity;
 		this.upgradeQuantity = upgrade;
 		this.productPrice = productPrice;
 		this.upgradePrice = upgradePrice;
+		this.packing = packing;
 		if(this.upgradeQuantity > this.quantity) {
 			this.upgradeQuantity = quantity;
 		}
 		
-	   calculator();
+	   getCost();
 	}
 
 	public String getPizzaFlavor() {
@@ -180,7 +190,20 @@ public class Transaction implements Facade{
 	public void setUpgradePrice(Double upgradePrice) {
 		this.upgradePrice = upgradePrice;
 	}
-
+	
+	public Double getCost() {
+		Double total = (double) 0;
+		
+		total = this.productPrice * this.quantity;
+		
+		if(this.upgradeQuantity != 0) {
+			this.totalUpgradePrice = this.upgradeQuantity*this.upgradePrice;
+			this.totalPrice = total + this.totalUpgradePrice;
+		}else {
+			this.totalPrice = total;
+		}
+		return totalPrice;
+	}
 
 	public boolean luhnTest(){
 		
@@ -204,8 +227,8 @@ public class Transaction implements Facade{
 	public void addToTransactions(){
 
 		Connection connection = SingletonDB.getConnection(); 
-		String selectPizza = "INSERT IGNORE INTO transactions (customer_name, street, brgy, city, zip_code, pizza_flavor, total_price, upgrade_quantity, quantity)" + 
-				"VALUES (?, ?, ?, ?, ?, ?, ? ,? ,?);";
+		String selectPizza = "INSERT IGNORE INTO transactions (customer_name, street, brgy, city, zip_code, pizza_flavor, total_price, upgrade_quantity, quantity, packaging)" + 
+				"VALUES (?, ?, ?, ?, ?, ?, ? ,? ,?, ?);";
 		
 		try {
 			
@@ -220,6 +243,7 @@ public class Transaction implements Facade{
 			pstmnt.setDouble(7,totalPrice);
 			pstmnt.setInt(8,upgradeQuantity);
 			pstmnt.setInt(9,quantity);
+			pstmnt.setString(10, packing);
 			
 			pstmnt.executeUpdate();//execution of query
 			
@@ -276,21 +300,6 @@ public class Transaction implements Facade{
 		
 		System.out.println("Successfully Updated Stock!");
     }
-	
-	public Double calculator() {
-		Double total = (double) 0;
-		
-		total = this.productPrice * this.quantity;
-		
-		if(this.upgradeQuantity != 0) {
-			this.totalUpgradePrice = this.upgradeQuantity*this.upgradePrice;
-			this.totalPrice = total + this.totalUpgradePrice;
-		}else {
-			this.totalPrice = total;
-		}
-		return totalPrice;
-	}
-
 
 	@Override
 	public boolean process(ServletContext context) {
@@ -307,9 +316,6 @@ public class Transaction implements Facade{
 			System.out.println("Credit card is invalid!");
 			return false;
 		}
-		
-		
-		
 	}
 	
 	
@@ -334,11 +340,11 @@ public class Transaction implements Facade{
 	   	      String orderMessage2 = String.valueOf(this.quantity) + "pc/s " + this.pizzaFlavor;
 	   	      String orderMessage3 = "Upgraded pizza: " + String.valueOf(this.upgradeQuantity);
 	   	      String orderMessage4 = "Total Upgrade Price: " + String.valueOf(this.totalUpgradePrice) + "0";
+	   	      String orderMessage5 = this.packing;
 	   	      String totalPriceMessage= "TOTAL: Php " + String.valueOf(this.totalPrice) + "0";
 	   	      String addressMessage1 = "Customer Name: " + this.name;
 	   	      String addressMessage2 = "Address: " + this.houseSt + ", " + this.brgy + ", " + this.city + ", " + this.zipCode;  
-	   	      
-	   	      
+	   	  
 		   	   PDPageContentStream contents = new PDPageContentStream(document, page);
 		   	   
 		   	   PDFont font = PDType1Font.COURIER_BOLD;
@@ -383,6 +389,8 @@ public class Transaction implements Facade{
 	           contents.showText(orderMessage3);
 	           contents.newLine();
 	           contents.showText(orderMessage4);
+	           contents.newLine();
+	           contents.showText(orderMessage5);
 	           contents.setLeading(50f);
 	           
 	           contents.newLine();

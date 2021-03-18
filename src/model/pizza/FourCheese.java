@@ -97,8 +97,4 @@ public class FourCheese extends PizzademicPizza implements DBOps {
 		return new Wrapper();
 	}
 
-	
-	
-
-
 }

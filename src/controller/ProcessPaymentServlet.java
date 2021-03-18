@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.transaction.Transaction;
+import model.transaction.PizzaBuilder;
 
 public class ProcessPaymentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -24,7 +24,7 @@ public class ProcessPaymentServlet extends HttpServlet {
 			
 			ServletContext context = getServletContext();
 			
-			Transaction confirmTransaction = new Transaction();
+			PizzaBuilder confirmTransaction = new PizzaBuilder();
 			
 			confirmTransaction.setName(request.getParameter("nameOnCard"));
 			confirmTransaction.setUserEmail(request.getParameter("userEmail"));
@@ -38,6 +38,7 @@ public class ProcessPaymentServlet extends HttpServlet {
 			confirmTransaction.setBrgy(request.getParameter("brgy"));
 			confirmTransaction.setCity(request.getParameter("city"));
 			confirmTransaction.setZipCode(request.getParameter("zipCode"));
+			confirmTransaction.setPacking(request.getParameter("packing"));
 			
 			//implementation of the Facade Design Pattern
 			boolean isValid = confirmTransaction.process(context);

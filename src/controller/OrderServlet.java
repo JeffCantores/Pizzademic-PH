@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.transaction.Transaction;
+import model.transaction.PizzaBuilder;
 
 public class OrderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -26,10 +26,12 @@ public class OrderServlet extends HttpServlet {
 			Double pizzaPrice = Double.parseDouble(request.getParameter("price"));
 			Double upgradePrice = Double.parseDouble(request.getParameter("upgradePrice"));
 			int pizzaUpgrade = Integer.parseInt(request.getParameter("upgrade"));
+			String packaging = request.getParameter("packing");
 			
-			Transaction transaction = new Transaction(pizzaFlavor, pizzaQty, pizzaUpgrade, pizzaPrice, upgradePrice);	
+			
+			PizzaBuilder mealBuilder = new PizzaBuilder(pizzaFlavor, pizzaQty, pizzaUpgrade, pizzaPrice, upgradePrice, packaging);	
 
-			request.setAttribute("order", transaction); 
+			request.setAttribute("order", mealBuilder); 
 			
 			RequestDispatcher dispatcher = request.getRequestDispatcher("checkout.jsp");
 			dispatcher.forward(request, response);

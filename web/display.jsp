@@ -122,7 +122,8 @@
  	 			<input type="number" id="quantity" name="quantity" value="1" min="1" max="10"> 
  	 			<label class="h4" for="upgrade">&nbsp&nbsp No. of Pizza to upgrade:</label>
  	 			<input type="number" id="upgrade" name="upgrade" value="0" min="0" max="10">
- 	 			<span disabled><br>Note: The excess number for upgrade will automatically be neglected</span><br><br>
+ 	 			<span disabled><br>Note: The excess number for upgrade will automatically be neglected</span><br>
+ 	 			<h5><input type="text" readonly class="form-control-plaintext" name="packing" value="${pizza.packing().pack()}" style="color: green;"></h5>
  	 			<!-- dito kinukuha nya rin yung available qty ng pizza max="ognl(?)"  -->
  	 			
     		<div class="lead">

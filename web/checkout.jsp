@@ -156,6 +156,9 @@
          			<h6 class="mb-0" style="color: white;"><input type="text" readonly class="form-control-plaintext" name="upgradedPizza" value="Total Upgrade Price: " ></h6>
          			<h6 class="mb-0" style="color: white;"><input type="text" readonly class="form-control-plaintext" name="totalUpgradePrice" value="${order.getTotalUpgradePrice()}0"></h6>
                 </div> 
+                <div class="d-flex flex-row align-items-end mb-3">
+         			<input type="text" readonly class="form-control-plaintext" name="packing" value="${order.getPacking()}">
+                </div> 
             </div>
         </div>
     </div>
