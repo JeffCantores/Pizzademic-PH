@@ -1,4 +1,4 @@
-package model.transaction;
+package model.builder;
 
 import javax.servlet.ServletContext;
 

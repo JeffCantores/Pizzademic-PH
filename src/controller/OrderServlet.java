@@ -8,7 +8,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.transaction.PizzaBuilder;
+import model.builder.PizzaBuilder;
 
 public class OrderServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;

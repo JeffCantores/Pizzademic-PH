@@ -1,4 +1,4 @@
-package model.transaction;
+package model.builder;
 
 import java.io.IOException;
 import java.nio.file.Path;
