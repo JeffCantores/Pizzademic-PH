@@ -2,18 +2,11 @@ package utility;
 
 import model.upgrade.*;
 
-import java.util.HashMap;
-import java.util.Map;
-
-//import java.util.ArrayList;
-//import java.util.List;
-
+import java.util.*;
 import model.pizza.*;
-//import model.item.*;
 
-public class PizzaFactory implements AbstractFactory {
+public class PizzaFactory implements AbstractFactory{
 	
-//	private List<PizzaProduct> pizzaProducts = new ArrayList<PizzaProduct>();
 	private static final Map<String, PizzademicPizza> pizza_prototypes = new HashMap<>();
 	
 	static {
@@ -22,8 +15,7 @@ public class PizzaFactory implements AbstractFactory {
 		pizza_prototypes.put("TROPICALE", new Tropicale());
 		
 	}
-	
-	
+
 	public PizzademicPizza getPizza(String pizzaFlavor) {	
 		
     	try {

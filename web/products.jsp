@@ -1,6 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
-    
+
+<%@ page import = "java.util.Iterator"%>
+<%@ page import = "model.iterator.bean.*"%>
+<%@ page import = "model.iterator.pizzas.PizzademicPHPizzas"%>
+<%@ page import = "model.iterator.iterator.PizzaIterator"%>
+
+      
 <!doctype html>
 <html lang="en">
 	<head>
@@ -68,9 +74,6 @@
 	
 	  <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
 	    <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
-	    <!-- <li class="nav-item">
-	        <a class="nav-link" href="index.jsp">Home</a>
-	      </li>  -->
 	      <li class="nav-item dropdown  active">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" 
         aria-haspopup="true" aria-expanded="false">
@@ -116,36 +119,37 @@
 		
 		  <h2 class="mb-4 display-5">Pizza Flavors</h2>
 		  <div class="row">
-		    <div class="col-md-6 col-lg-4 mb-5">
+		  
+		  <%
+
+				PizzademicPHPizzas pizzas = new PizzademicPHPizzas();
+				PizzaIterator pizzaIterator = pizzas;
+				
+				Iterator<PizzaBean> iterator = pizzaIterator.createPizzaIterator();
+				
+				//test fetch
+				while(iterator.hasNext()){
+					PizzaBean pizzaItems = (PizzaBean) iterator.next();
+					
+					//The following will be the data displayed from the iterator
+					System.out.println("Flavor: " + pizzaItems.getPizzaName());
+					System.out.println("Photo Link: " + pizzaItems.getPizzaPhoto());
+					System.out.println("Description: " + pizzaItems.getPizzaDescription() + "\n");
+			%>
+				
+			    <div class="col-md-6 col-lg-4 mb-5">
 					<div class="card mellow p-3" >
-					  <img class="card-img-top" src="images/4cheesead.png" alt="Card image cap">
-					  <div class="card-body">
-					    <h5 class="card-title">Four Cheese</h5>
-					    <p class="card-text">What if CHEESE? but just the right amount. Satisfy your craving with this CHEESY pizza.</p>
-					    <input class="btn btn-light btn-sm" type="submit" name="flavor" value='Four Cheese'>
-					  </div>
-					</div>
-		    </div>
-		    <div class="col-md-6 col-lg-4 mb-5">
-					<div class="card mellow p-3" >
-					  <img class="card-img-top" src="images/pepperoniad.png" alt="Card image cap">
-					  <div class="card-body">
-					    <h5 class="card-title">Pepperoni</h5>
-					    <p class="card-text">Imagine that mouth watering MEATY goodness of Pepperonis! Satisfy your craving with this MEATY pizza.</p>
-					    <input class="btn btn-light btn-sm" type="submit" name="flavor" value='Pepperoni'>
-					  </div>
-					</div>
-		    </div>
-		    <div class="col-md-6 col-lg-4 mb-5">
-					<div class="card mellow p-3" >
-					  <img class="card-img-top" src="images/tropicalead.png" alt="Card image cap">
-					  <div class="card-body">
-					    <h5 class="card-title">Tropicale</h5>
-					    <p class="card-text">Aloha~ A REFRESHING burst from every bite! Satisfy your craving with this HAWAIAN pizza.</p>
-					    <input class="btn btn-light btn-sm" type="submit" name="flavor" value='Tropicale'>
-					  </div>
-					</div>
-		    </div>
+						 <img class="card-img-top" src="<%= pizzaItems.getPizzaPhoto()%>" alt="Card image cap">
+						 <div class="card-body">
+						   <h5 class="card-title"><%= pizzaItems.getPizzaName()%></h5>
+						   <p class="card-text"><%= pizzaItems.getPizzaDescription()%></p>
+						   <input class="btn btn-light btn-sm" type="submit" name="flavor" value='<%= pizzaItems.getPizzaName()%>'>
+						 </div>
+					</div>	
+			    </div>
+		   
+		 	 <%}%>
+		   
 		  </div>
 		</div>
 	</div>

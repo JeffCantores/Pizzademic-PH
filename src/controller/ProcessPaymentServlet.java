@@ -3,13 +3,13 @@ package controller;
 import java.io.IOException;
 
 import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import model.transaction.Transaction;
-
+import model.builder.PizzaBuilder;
 
 public class ProcessPaymentServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
@@ -22,7 +22,9 @@ public class ProcessPaymentServlet extends HttpServlet {
 		
 		try {
 			
-			Transaction confirmTransaction = new Transaction();
+			ServletContext context = getServletContext();
+			
+			PizzaBuilder confirmTransaction = new PizzaBuilder();
 			
 			confirmTransaction.setName(request.getParameter("nameOnCard"));
 			confirmTransaction.setUserEmail(request.getParameter("userEmail"));
@@ -36,9 +38,10 @@ public class ProcessPaymentServlet extends HttpServlet {
 			confirmTransaction.setBrgy(request.getParameter("brgy"));
 			confirmTransaction.setCity(request.getParameter("city"));
 			confirmTransaction.setZipCode(request.getParameter("zipCode"));
+			confirmTransaction.setPacking(request.getParameter("packing"));
 			
 			//implementation of the Facade Design Pattern
-			boolean isValid = confirmTransaction.process();
+			boolean isValid = confirmTransaction.process(context);
 			
 			if(isValid) {
 				request.setAttribute("checkout", confirmTransaction); 
@@ -46,7 +49,7 @@ public class ProcessPaymentServlet extends HttpServlet {
 				RequestDispatcher dispatcher = request.getRequestDispatcher("order-confirmation.jsp");
 				dispatcher.forward(request, response);
 			}else {
-				RequestDispatcher dispatcher = request.getRequestDispatcher("error.jsp");
+				RequestDispatcher dispatcher = request.getRequestDispatcher("invalidcreditcard.jsp");
 				dispatcher.forward(request, response);
 			}
 			
