@@ -6,6 +6,7 @@ public interface DBOps {
 	String INITIALIZE_PIZZA_TABLE = "CREATE TABLE IF NOT EXISTS `pizza` (" + 
 			"`id` INT NOT NULL AUTO_INCREMENT , \r\n" + 
 			"`pizza_flavor` VARCHAR(20) NOT NULL ,\r\n" + 
+			"`pizza_photo` VARCHAR(30) NOT NULL ,\r\n" +
 			"`pizza_price` FLOAT NOT NULL , \r\n" + 
 			"`pizza_description` VARCHAR(500) NOT NULL , \r\n" + 
 			"`quantity` INT NOT NULL , PRIMARY KEY (`id`));";
@@ -29,11 +30,11 @@ public interface DBOps {
 			"`quantity` INT NOT NULL ,\r\n " +
 			"`packaging` VARCHAR(50) NOT NULL , PRIMARY KEY (`transaction_id`));";
 	
-	String INSERT_PIZZA_VALUES = "INSERT IGNORE INTO pizza (id, pizza_Flavor, pizza_price, pizza_description, quantity)" + 
+	String INSERT_PIZZA_VALUES = "INSERT IGNORE INTO pizza (id, pizza_Flavor, pizza_photo, pizza_price, pizza_description, quantity)" + 
 			"VALUES" + 
-			"(1, 'Four Cheese', 165.00, 'Satisfy your cravings with this creamy four cheese pizza with a composition of Mozzarella, Gorgonzola, Fontina and Parmigiano cheese.', 10)," + 
-			"(2, 'Pepperoni', 185.00, 'Savory smell of meaty Pepperonis combined with a lot of cheese, on top of a rich and delicious tomato sauce.', 10)," + 
-			"(3, 'Tropicale', 205.00, 'Refreshing combination of Fresh Pineapple, savory bell peppers, meaty goodness of hams, and a lot of cheese, altogether on top of a rich and delicious tomato sauce.', 10);";
+			"(1, 'Four Cheese', 'https://imgur.com/TKScBMR.png', 165.00, 'Satisfy your cravings with this creamy four cheese pizza with a composition of Mozzarella, Gorgonzola, Fontina and Parmigiano cheese.', 10)," + 
+			"(2, 'Pepperoni', 'https://imgur.com/WPYhQ1D.png', 185.00, 'Savory smell of meaty Pepperonis combined with a lot of cheese, on top of a rich and delicious tomato sauce.', 10)," + 
+			"(3, 'Tropicale', 'https://imgur.com/H6fwpLF.png', 205.00, 'Refreshing combination of Fresh Pineapple, savory bell peppers, meaty goodness of hams, and a lot of cheese, altogether on top of a rich and delicious tomato sauce.', 10);";
 			
 	String INSERT_UPGRADE_VALUES = "INSERT IGNORE INTO upgrade (id, upgrade_type, upgrade_price, upgrade_description)" + 
 			"VALUES " + 

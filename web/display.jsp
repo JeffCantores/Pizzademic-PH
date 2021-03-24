@@ -114,7 +114,7 @@
 	    <hr class="my-4">
 	    <form action='processorder.action' method='post'>
   		<p class="lead">Upgrade to <b>${pizza.getUpgrade().viewUpgradeType()}</b> for only Php
-  		<input type="text" name="upgradePrice" value="${pizza.getUpgrade().viewUpgradePrice()}" hidden>0 srp</p>
+  		<input type="text" readonly name="upgradePrice" value="${pizza.getUpgrade().viewUpgradePrice()}" hidden>${pizza.getUpgrade().viewUpgradePrice()}0 srp</p>
   		<p>${pizza.getUpgrade().viewUpgradeDetails()}</p>
     			<input type="text" name="flavor" value="${pizza.viewFlavor()}" hidden>
     			<input type="text" name="price" value="${pizza.viewPrice()}" hidden><br>

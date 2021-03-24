@@ -10,7 +10,6 @@ import javax.servlet.http.HttpServletResponse;
 
 import utility.SingletonDB;
 
-
 public class SeeAllProductsServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
   
@@ -21,10 +20,9 @@ public class SeeAllProductsServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 		SingletonDB.instantiate();
-		
+	
 		RequestDispatcher dispatcher = request.getRequestDispatcher("products.jsp");
 		dispatcher.forward(request, response);
-		
 	}
 
 }
